@@ -23,7 +23,7 @@ class Enemy {
     }
     // Draw the enemy on the screen, required method for game
     render() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+        ctx.drawImage(Resources.get('images/enemy-bug.png'), this.xCoordinate, this.yCoordinate);
     }
 }
 
@@ -36,7 +36,8 @@ class Enemy {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-const allEnemies = [new Enemy(0, 240, 100)];
+// 41, 124, 208
+const allEnemies = [new Enemy(100, -150, 208)];
 
 
 // This listens for key presses and sends the keys to your
