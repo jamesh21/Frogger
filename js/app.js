@@ -36,8 +36,22 @@ class Enemy {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-// 41, 124, 208
-const allEnemies = [new Enemy(100, -150, 208)];
+// 41, 124, 208 (83 - 41 = 42, 166 - 41 = 125, 249 - 41 = 208)
+function initiateEnemyPosition () {
+    const startRow = Math.floor(Math.random() * 3) + 1;
+    const heightOfPlatform = 83;
+    return (heightOfPlatform * startRow) - (heightOfPlatform / 2);
+}
+
+function initiateEnemySpeed () {
+    var result = (Math.floor(Math.random() * 5) + 1) * 10 + 150
+    console.log(result)
+    return result;
+}
+const allEnemies = [new Enemy(300, -150, initiateEnemyPosition()),
+                    new Enemy(initiateEnemySpeed(), -150, initiateEnemyPosition()),
+                    new Enemy(initiateEnemySpeed(), -150, initiateEnemyPosition()),
+                    new Enemy(initiateEnemySpeed(), -150, initiateEnemyPosition())];
 
 
 // This listens for key presses and sends the keys to your

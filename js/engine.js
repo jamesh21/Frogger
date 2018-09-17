@@ -91,7 +91,6 @@ var Engine = (function(global) {
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
-            console.log("Enemy XCoordinate " + enemy.xCoordinate + " Enemy YCoordinate " + enemy.yCoordinate);
             enemy.update(dt);
         });
         // player.update();
