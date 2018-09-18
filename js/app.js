@@ -1,3 +1,8 @@
+const enemyXStartPosition = -150;
+const playerXStartPosition = 202;
+const playerYStartPosition = 415;
+const playerVerticalMoveAmount = 83;
+const playerHorizontalMoveAmount = 101;
 // Enemies our player must avoid
 class Enemy {
     // Variables applied to each of our instances go here,
@@ -18,7 +23,9 @@ class Enemy {
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
-        // this.xCoordinate = (this.xCoordinate + this.speed) * dt;
+        if (this.xCoordinate > 505) {
+          this.xCoordinate = enemyXStartPosition;
+        }
         this.xCoordinate += this.speed * dt;
     }
     // Draw the enemy on the screen, required method for game
@@ -31,7 +38,39 @@ class Enemy {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+class Player {
 
+  constructor(xCoordinate, yCoordinate) {
+      this.sprite = 'images/char-boy.png';
+      this.xCoordinate = xCoordinate;
+      this.yCoordinate = yCoordinate;
+  }
+
+  update() {
+      console.log("x = " + this.xCoordinate + " y = " + this.yCoordinate);
+  }
+
+  render() {
+      ctx.drawImage(Resources.get('images/char-boy.png'), this.xCoordinate, this.yCoordinate);
+  }
+
+  handleInput(keyPressed) {
+      switch(keyPressed) {
+        case 'left':
+            this.xCoordinate -= playerHorizontalMoveAmount;
+            break;
+        case 'up':
+            this.yCoordinate -= playerVerticalMoveAmount;
+            break;
+        case 'right':
+            this.xCoordinate += playerHorizontalMoveAmount;
+            break;
+        case 'down':
+            this.yCoordinate += playerVerticalMoveAmount;
+            break;
+      }
+  }
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -45,15 +84,14 @@ function initiateEnemyPosition () {
 
 function initiateEnemySpeed () {
     var result = (Math.floor(Math.random() * 5) + 1) * 10 + 150
-    console.log(result)
     return result;
 }
-const allEnemies = [new Enemy(300, -150, initiateEnemyPosition()),
-                    new Enemy(initiateEnemySpeed(), -150, initiateEnemyPosition()),
-                    new Enemy(initiateEnemySpeed(), -150, initiateEnemyPosition()),
-                    new Enemy(initiateEnemySpeed(), -150, initiateEnemyPosition())];
+const allEnemies = [new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
+                    new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
+                    new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
+                    new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition())];
 
-
+const player = new Player(playerXStartPosition, playerYStartPosition);
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
