@@ -1,8 +1,14 @@
 const enemyXStartPosition = -150;
-const playerXStartPosition = 202;
-const playerYStartPosition = 415;
-const playerVerticalMoveAmount = 83;
-const playerHorizontalMoveAmount = 101;
+const blockWidth = 100;
+const blockHeight = 83;
+const playerXStartPosition = blockWidth * 2;
+const playerYStartPosition = blockHeight * 5;
+const playerMoveAmount = blockWidth;
+const topOfTheMap = 0;
+const bottomOfTheMap = blockHeight * 6;
+const leftOfTheMap = 0;
+const rightOfTheMap = blockWidth * 5;
+
 // Enemies our player must avoid
 class Enemy {
     // Variables applied to each of our instances go here,
@@ -40,37 +46,54 @@ class Enemy {
 // a handleInput() method.
 class Player {
 
-  constructor(xCoordinate, yCoordinate) {
+  constructor (xCoordinate, yCoordinate) {
       this.sprite = 'images/char-boy.png';
       this.xCoordinate = xCoordinate;
       this.yCoordinate = yCoordinate;
   }
 
-  update() {
-      console.log("x = " + this.xCoordinate + " y = " + this.yCoordinate);
+  update () {
+      if (this.yCoordinate < topOfTheMap) {
+          this.resetPlayer();
+      }
+      if (this.yCoordinate > bottomOfTheMap) {
+          this.yCoordinate -= playerMoveAmount;
+      }
+      if (this.xCoordinate < rightOfTheMap) {
+          this.xCoordinate += playerMoveAmount;
+      }
+      if (this.xCoordinate > leftOfTheMap) {
+          this.xCoordinate -= playerMoveAmount;
+      }
   }
 
-  render() {
+  render () {
       ctx.drawImage(Resources.get('images/char-boy.png'), this.xCoordinate, this.yCoordinate);
   }
 
-  handleInput(keyPressed) {
-      switch(keyPressed) {
+  handleInput (keyPressed) {
+      switch (keyPressed) {
         case 'left':
-            this.xCoordinate -= playerHorizontalMoveAmount;
+            this.xCoordinate -= playerMoveAmount;
             break;
         case 'up':
-            this.yCoordinate -= playerVerticalMoveAmount;
+            this.yCoordinate -= playerMoveAmount;
             break;
         case 'right':
-            this.xCoordinate += playerHorizontalMoveAmount;
+            this.xCoordinate += playerMoveAmount;
             break;
         case 'down':
-            this.yCoordinate += playerVerticalMoveAmount;
+            this.yCoordinate += playerMoveAmount;
             break;
       }
   }
+
+  resetPlayer () {
+      this.xCoordinate = playerXStartPosition;
+      this.yCoordinate = playerYStartPosition;
+  }
 }
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -92,6 +115,8 @@ const allEnemies = [new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiat
                     new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition())];
 
 const player = new Player(playerXStartPosition, playerYStartPosition);
+
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
