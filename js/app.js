@@ -16,7 +16,7 @@ class Enemy {
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    constructor(speed, xCoordinate, yCoordinate) {
+    constructor (speed, xCoordinate, yCoordinate) {
         this.speed = speed;
         this.sprite = 'images/enemy-bug.png';
         this.xCoordinate = xCoordinate;
@@ -25,7 +25,7 @@ class Enemy {
 
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
-    update(dt) {
+    update (dt) {
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
@@ -33,6 +33,18 @@ class Enemy {
           this.xCoordinate = enemyXStartPosition;
         }
         this.xCoordinate += this.speed * dt;
+        if (this.checkCollisions()) {
+            player.resetPlayer();
+        }
+    }
+
+    checkCollisions () {
+        if ((this.xCoordinate >= player.xCoordinate && this.xCoordinate <= (player.xCoordinate + blockWidth))
+                && (this.yCoordinate >= player.xCoordinate && this.yCoordinate <= (player.yCoordinate + blockHeight))) {
+            return true;
+        } else {
+            return false;
+        }
     }
     // Draw the enemy on the screen, required method for game
     render() {
