@@ -39,9 +39,14 @@ class Enemy {
     }
 
     checkCollisions () {
-        if ((this.xCoordinate >= player.xCoordinate && this.xCoordinate <= (player.xCoordinate + blockWidth))
-                && (this.yCoordinate >= player.xCoordinate && this.yCoordinate <= (player.yCoordinate + blockHeight))) {
+        if (this.xCoordinate + 80 > player.xCoordinate && this.xCoordinate < player.xCoordinate + 80
+                && this.yCoordinate + 60 > player.yCoordinate && this.yCoordinate < player.yCoordinate + 60) {
             return true;
+        // console.log("enemy x = " + this.xCoordinate + " y = " + this.yCoordinate);
+        // console.log("player x = " + player.xCoordinate + "y = " + player.yCoordinate);
+        // if (this.xCoordinate == player.xCoordinate && this.yCoordinate == player.yCoordinate) {
+        //     return true;
+
         } else {
             return false;
         }
@@ -121,10 +126,12 @@ function initiateEnemySpeed () {
     var result = (Math.floor(Math.random() * 5) + 1) * 10 + 150
     return result;
 }
-const allEnemies = [new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
-                    new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
-                    new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
-                    new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition())];
+// const allEnemies = [new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
+//                     new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
+//                     new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
+//                     new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition())];
+const allEnemies = [new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition())];
+
 
 const player = new Player(playerXStartPosition, playerYStartPosition);
 
