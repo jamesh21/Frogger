@@ -6,10 +6,10 @@ bugs.
 ![Image Of Game Board](/images/Frogger_2.PNG)
 
 # Controls
-Up Arrow - Move Up
-Down Arrow - Move Down
-Left Arrow - Move Left
-Right Arrow - Move Right
+Up Arrow - Move Up\
+Down Arrow - Move Down\
+Left Arrow - Move Left\
+Right Arrow - Move Right\
 
 # Quickstart
 
