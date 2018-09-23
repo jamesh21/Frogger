@@ -7,12 +7,12 @@ bugs.
 
 # Scoring
 100 Points Awarded when reaching the water\
-50 Points deducted when colliding with an enemy\
+50 Points deducted when colliding with an enemy
 # Controls
 Up Arrow - Move Up\
 Down Arrow - Move Down\
 Left Arrow - Move Left\
-Right Arrow - Move Right\
+Right Arrow - Move Right
 
 # Quickstart
 
