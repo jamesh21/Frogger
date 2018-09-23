@@ -1,4 +1,6 @@
-const enemyXStartPosition = -150;
+// Initializes the constant variables of the game.
+const scoreBoard = document.querySelector('#game-score');
+const enemyXStartPosition = -200;
 const blockWidth = 100;
 const blockHeight = 83;
 const playerXStartPosition = blockWidth * 2;
@@ -9,13 +11,10 @@ const bottomOfTheMap = blockHeight * 6;
 const leftOfTheMap = 0;
 const rightOfTheMap = blockWidth * 5;
 
-// Enemies our player must avoid
+// Enemy Class
 class Enemy {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // Constructore for the enemy object.
     constructor (speed, xCoordinate, yCoordinate) {
         this.speed = speed;
         this.sprite = 'images/enemy-bug.png';
@@ -23,34 +22,36 @@ class Enemy {
         this.yCoordinate = yCoordinate;
     }
 
-    // Update the enemy's position, required method for game
-    // Parameter: dt, a time delta between ticks
+    // Method checks if an enemy has collided with the player and have the
+    // enemy wrap around if it goes out of bounds.
     update (dt) {
-        // You should multiply any movement by the dt parameter
-        // which will ensure the game runs at the same speed for
-        // all computers.
         if (this.xCoordinate > 505) {
           this.xCoordinate = enemyXStartPosition;
         }
         this.xCoordinate += this.speed * dt;
         if (this.checkCollisions()) {
+            let currentScore = Number(scoreBoard.innerHTML);
+            if (currentScore - 50 <= 0) {
+                currentScore = 0;
+            } else {
+                currentScore -= 50;
+            }
+            scoreBoard.innerHTML = currentScore;
             player.resetPlayer();
         }
     }
 
+    // Helper method to check collision with a player. Check if the player
+    // overlaps with any of the enemies.
     checkCollisions () {
         if (this.xCoordinate + 70 > player.xCoordinate && this.xCoordinate < player.xCoordinate + 70
                 && this.yCoordinate + 60 > player.yCoordinate && this.yCoordinate < player.yCoordinate + 60) {
             return true;
-        // console.log("enemy x = " + this.xCoordinate + " y = " + this.yCoordinate);
-        // console.log("player x = " + player.xCoordinate + "y = " + player.yCoordinate);
-        // if (this.xCoordinate == player.xCoordinate && this.yCoordinate == player.yCoordinate) {
-        //     return true;
-
         } else {
             return false;
         }
     }
+
     // Draw the enemy on the screen, required method for game
     render() {
         ctx.drawImage(Resources.get('images/enemy-bug.png'), this.xCoordinate, this.yCoordinate);
@@ -58,19 +59,21 @@ class Enemy {
 }
 
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Player Class
 class Player {
 
+  // Constructor for player.
   constructor (xCoordinate, yCoordinate) {
       this.sprite = 'images/char-boy.png';
       this.xCoordinate = xCoordinate;
       this.yCoordinate = yCoordinate;
   }
 
+  // Checks to see if the player crosses the water and limit their movement from
+  // going off screen
   update () {
       if (this.yCoordinate < topOfTheMap) {
+          scoreBoard.innerHTML = Number(scoreBoard.innerHTML) + 100;
           this.resetPlayer();
       }
       if (this.yCoordinate > bottomOfTheMap) {
@@ -84,10 +87,12 @@ class Player {
       }
   }
 
+  // Draw player
   render () {
       ctx.drawImage(Resources.get('images/char-boy.png'), this.xCoordinate, this.yCoordinate);
   }
 
+  // Handles the input of the player and updates the x or y coordinates.
   handleInput (keyPressed) {
       switch (keyPressed) {
         case 'left':
@@ -105,34 +110,40 @@ class Player {
       }
   }
 
+  // Resets player to their original spot.
   resetPlayer () {
       this.xCoordinate = playerXStartPosition;
       this.yCoordinate = playerYStartPosition;
   }
 }
 
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-// 41, 124, 208 (83 - 41 = 42, 166 - 41 = 125, 249 - 41 = 208)
-function initiateEnemyPosition () {
-    const startRow = Math.floor(Math.random() * 3) + 1;
+// Randomly Initializes the enemies Y position
+function initiateEnemyYPosition (startSpot) {
+    const startRow = startSpot == null ? Math.floor(Math.random() * 3) + 1 : startSpot;
     const heightOfPlatform = 83;
     return (heightOfPlatform * startRow) - (heightOfPlatform / 2);
 }
 
+// Randomly Initializes the enemies X position
+function initiateEnemyXPosition () {
+    return (Math.floor(Math.random() * 10) + 8) * 25 + enemyXStartPosition;
+}
+
+// Randomly Initializes the enemies speed.
 function initiateEnemySpeed () {
-    var result = (Math.floor(Math.random() * 5) + 1) * 10 + 150
+    var result = (Math.floor(Math.random() * 10) + 5) * 11 + 150;
     return result;
 }
-const allEnemies = [new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
-                    new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
-                    new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition()),
-                    new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition())];
-// const allEnemies = [new Enemy(initiateEnemySpeed(), enemyXStartPosition, initiateEnemyPosition())];
 
+// Initializes all the enemies in the game.
+const allEnemies = [new Enemy(initiateEnemySpeed(), initiateEnemyXPosition(), initiateEnemyYPosition(1)),
+                    new Enemy(initiateEnemySpeed(), initiateEnemyXPosition(), initiateEnemyYPosition(2)),
+                    new Enemy(initiateEnemySpeed(), initiateEnemyXPosition(), initiateEnemyYPosition(3)),
+                    new Enemy(initiateEnemySpeed(), initiateEnemyXPosition(), initiateEnemyYPosition()),
+                    new Enemy(initiateEnemySpeed(), initiateEnemyXPosition(), initiateEnemyYPosition()),
+                    new Enemy(initiateEnemySpeed(), initiateEnemyXPosition(), initiateEnemyYPosition())];
 
+// Initializes the player.
 const player = new Player(playerXStartPosition, playerYStartPosition);
 
 
